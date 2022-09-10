@@ -3,7 +3,7 @@ name = "chordview"
 version = "0.1.0"
 description = "Visualizing chords on the tone cycle"
 authors = ["Flávio Codeço Coelho <fccoelho@gmail.com>"]
-license = "mit"
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"

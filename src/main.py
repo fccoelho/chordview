@@ -1,11 +1,12 @@
 import flet
 from flet import AppBar, Page, Text, ElevatedButton, View, colors
 
+
 def main(page: Page):
     t = Text(value="Hello, world!", color="green")
     page.controls.append(t)
     page.update()
-    
+
     def route_change(route):
         page.views.clear()
         page.views.append(
@@ -13,8 +14,10 @@ def main(page: Page):
                 "/",
                 [
                     AppBar(title=Text("Chords"), bgcolor=colors.SURFACE_VARIANT),
-                    ElevatedButton(" Go to Scales", on_click=lambda _: page.go("/scales")),
-                ]
+                    ElevatedButton(
+                        " Go to Scales", on_click=lambda _: page.go("/scales")
+                    ),
+                ],
             )
         )
         if page.route == "/scales":
@@ -28,14 +31,15 @@ def main(page: Page):
                 )
             )
         page.update()
-        
+
     def view_pop(view):
         page.views.pop()
         top_view = page.views[-1]
         page.go(top_view.route)
-        
+
     page.on_route_change = route_change
     page.on_view_pop = view_pop
     page.go(page.route)
+
 
 flet.app(target=main)

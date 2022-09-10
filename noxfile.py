@@ -1,6 +1,8 @@
 import nox
+from glob import glob
 
 @nox.session
 def lint(session):
-    session.install("flake8")
-    session.run("flake8", "src/main.py")
+    session.install("black")
+    for f in glob("src/*.py"):
+        session.run("black", f)

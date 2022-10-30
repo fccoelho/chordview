@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chordview"
-version = "0.1.0"
+version = "0.1.1"
 description = "Visualizing chords on the tone cycle"
 authors = ["Flávio Codeço Coelho <fccoelho@gmail.com>"]
 license = "MIT"

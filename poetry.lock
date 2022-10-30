@@ -140,7 +140,7 @@ development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
 
 [[package]]
 name = "contourpy"
-version = "1.0.5"
+version = "1.0.6"
 description = "Python library for calculating contours of 2D quadrilateral grids"
 category = "main"
 optional = false
@@ -150,11 +150,11 @@ python-versions = ">=3.7"
 numpy = ">=1.16"
 
 [package.extras]
-test-no-codebase = ["pillow", "matplotlib", "pytest"]
+bokeh = ["bokeh", "selenium"]
+docs = ["docutils (<0.18)", "sphinx (<=5.2.0)", "sphinx-rtd-theme"]
+test = ["pytest", "matplotlib", "pillow", "flake8", "isort"]
 test-minimal = ["pytest"]
-test = ["isort", "flake8", "pillow", "matplotlib", "pytest"]
-docs = ["sphinx-rtd-theme", "sphinx", "docutils (<0.18)"]
-bokeh = ["selenium", "bokeh"]
+test-no-codebase = ["pytest", "matplotlib", "pillow"]
 
 [[package]]
 name = "cycler"
@@ -542,7 +542,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pillow"
-version = "9.2.0"
+version = "9.3.0"
 description = "Python Imaging Library (Fork)"
 category = "main"
 optional = false
@@ -943,7 +943,7 @@ docs = ["sphinx-rtd-theme (>=0.5)", "Sphinx (>=3.4)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "bc57e36464cb030e3cd8e172bcde464440e86999288dd1dd9c4c39ce073639c6"
+content-hash = "89075fa4d23fc11c302b5f83c9d80a333ccdf107197e5e38fe7c923f93a4e21c"
 
 [metadata.files]
 alabaster = [

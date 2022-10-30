@@ -7,8 +7,9 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-musicir = "^0.0.3"
+musicir = "^0.0.5"
 flet = "^0.1.58"
+SQLAlchemy = "^1.4.42"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.3"

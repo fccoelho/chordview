@@ -1,45 +1,37 @@
 import flet
-from flet import AppBar, Page, Text, ElevatedButton, View, colors
+from flet import AppBar, Page, Text, ElevatedButton, \
+    View, colors, TextField, FloatingActionButton, icons, \
+    Row, Dropdown, dropdown
+
+from sqlalchemy import create_engine
+
+db = create_engine("sqlite:///leadsheets.sqlite")
 
 
 def main(page: Page):
-    t = Text(value="Hello, world!", color="green")
-    page.controls.append(t)
+    def search_clicked(e):
+        with db.connect() as conn:
+            conn.execute("PRAGMA case_sensitive_like=OFF;")
+            res = conn.execute(f"SELECT title from song where title like '%{song.value}%'")
+            titles = res.fetchall()
+        for t in titles:
+            sdd.options.append(dropdown.Option(t[0]))
+        page.update()
+    def select_song(e):
+        sngname.value = sdd.value
+        page.update()
+        # page.add(Row([Text("Selected Song: "),Text(f"{sdd.value}")]))
+    song = TextField(hint_text="Which song do you want to play?", width=300)
+    sngname = Text(" ", style="titleLarge")
+    sel = Row([Text("Selected Song: ", style="titleMedium"), sngname])
+    sdd = Dropdown(width=600, options=[], on_change=select_song)
+    page.add(Text("Leadsheet Collection", style="displayLarge"))
+    page.add(Row([sdd, song, FloatingActionButton(icon=icons.SEARCH, on_click=search_clicked)]),
+             sel)
+
     page.update()
 
-    def route_change(route):
-        page.views.clear()
-        page.views.append(
-            View(
-                "/",
-                [
-                    AppBar(title=Text("Chords"), bgcolor=colors.SURFACE_VARIANT),
-                    ElevatedButton(
-                        " Go to Scales", on_click=lambda _: page.go("/scales")
-                    ),
-                ],
-            )
-        )
-        if page.route == "/scales":
-            page.views.append(
-                View(
-                    "/scales",
-                    [
-                        AppBar(title=Text("Scales"), bgcolor=colors.SURFACE_VARIANT),
-                        ElevatedButton("Go to Chord", on_click=lambda _: page.go("/")),
-                    ],
-                )
-            )
-        page.update()
 
-    def view_pop(view):
-        page.views.pop()
-        top_view = page.views[-1]
-        page.go(top_view.route)
-
-    page.on_route_change = route_change
-    page.on_view_pop = view_pop
-    page.go(page.route)
 
 
 flet.app(target=main)

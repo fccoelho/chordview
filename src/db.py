@@ -19,5 +19,4 @@ def _inspect_db(eng=None):
     with engine.begin() as conn:
         res = conn.execute(text("SELECT name FROM sqlite_master WHERE type='table';"))
         tables = res.fetchall()
-    print(tables)
     return len(tables) > 0

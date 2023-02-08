@@ -4,6 +4,9 @@ version = "0.1.1"
 description = "Visualizing chords on the tone cycle"
 authors = ["Flávio Codeço Coelho <fccoelho@gmail.com>"]
 license = "MIT"
+include = [
+    { path = "tests", format = "sdist" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"

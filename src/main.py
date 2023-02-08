@@ -2,18 +2,19 @@ import flet
 from flet import AppBar, Page, Text, ElevatedButton, \
     View, colors, TextField, FloatingActionButton, icons, \
     Row, Dropdown, dropdown
+from db import get_engine
 
-from sqlalchemy import create_engine
-
-db = create_engine("sqlite:///leadsheets.sqlite")
-
+def search_song(query: str):
+    engine = get_engine()
+    with engine.connect() as conn:
+        conn.execute("PRAGMA case_sensitive_like=OFF;")
+        res = conn.execute(f"SELECT title from song where title like '%{query}%'")
+        titles = res.fetchall()
+    return titles
 
 def main(page: Page):
     def search_clicked(e):
-        with db.connect() as conn:
-            conn.execute("PRAGMA case_sensitive_like=OFF;")
-            res = conn.execute(f"SELECT title from song where title like '%{song.value}%'")
-            titles = res.fetchall()
+        titles = search_song(sngname.value)
         for t in titles:
             sdd.options.append(dropdown.Option(t[0]))
         page.update()

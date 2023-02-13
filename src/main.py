@@ -12,7 +12,9 @@ class ChordViewApp(UserControl):
         super().__init__()
         self.page = page
         self.dlg = AlertDialog(
-            title=Text("Song not found!"),
+            title=Text("Not Found!"),
+            content = Text(""),
+            actions= [flet.TextButton("Ok", on_click=self.close_dialog)],
             on_dismiss=lambda e: 1
         )
         self.appbar_items = [
@@ -42,19 +44,27 @@ class ChordViewApp(UserControl):
     def search_clicked(self, e):
         titles = search_song(self.song.value)
         if not titles:
-            self.dialog = self.dlg
-            self.dialog.open = True
+            self.dlg.content = Text(f"No song containing the word '{self.song.value}'.")
+            self.page.dialog = self.dlg
+            self.page.dialog.open = True
+            self.page.update()
         else:
             for t in titles:
                 self.sdd.options.append(dropdown.Option(t[0]))
             self.sdd.value = titles[0][0]
+        self.update()
+
+    def close_dialog(self, e):
+        self.dlg.open = False
+        self.song.value = "Which song do you want to play?"
+        self.page.update()
         self.update()
     def select_song(self, e):
         self.sngname.value = self.sdd.value
         self.update()
 
     def build(self):
-        self.song = TextField(hint_text="Which song do you want to play?", width=300)
+        self.song = TextField(hint_text="Which song do you want to play?", width=400)
         self.sngname = Text(" ", style="titleLarge")
         self.selection = Row([Text("Selected Song: ", style="titleMedium"), self.sngname])
         self.sdd = Dropdown(width=600, options=[], on_change=self.select_song)

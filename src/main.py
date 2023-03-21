@@ -1,4 +1,4 @@
-import flet
+import flet as ft
 from flet import (AppBar, Page, Text, ElevatedButton, UserControl,
     View, colors, TextField, FloatingActionButton, icons, margin, Column,
     Row, Dropdown, dropdown, PopupMenuItem, Icon, PopupMenuButton, Container,
@@ -14,7 +14,7 @@ class ChordViewApp(UserControl):
         self.dlg = AlertDialog(
             title=Text("Not Found!"),
             content = Text(""),
-            actions= [flet.TextButton("Ok", on_click=self.close_dialog)],
+            actions= [ft.TextButton("Ok", on_click=self.close_dialog)],
             on_dismiss=lambda e: 1
         )
         self.appbar_items = [
@@ -42,16 +42,14 @@ class ChordViewApp(UserControl):
         self.update()
 
     def search_clicked(self, e):
-        titles = search_song(self.song.value)
+        titles = sorted([t[0] for t in search_song(self.song.value)])
         if not titles:
             self.dlg.content = Text(f"No song containing the word '{self.song.value}'.")
             self.page.dialog = self.dlg
             self.page.dialog.open = True
             self.page.update()
         else:
-            for t in titles:
-                self.sdd.options.append(dropdown.Option(t[0]))
-            self.sdd.value = titles[0][0]
+            self.sdd.value = titles[0]
         self.update()
 
     def close_dialog(self, e):
@@ -64,10 +62,14 @@ class ChordViewApp(UserControl):
         self.update()
 
     def build(self):
+        ''' Build the GUI '''
+        titles = sorted([t[0] for t in search_song()])
         self.song = TextField(hint_text="Which song do you want to play?", width=400)
         self.sngname = Text(" ", style="titleLarge")
         self.selection = Row([Text("Selected Song: ", style="titleMedium"), self.sngname])
-        self.sdd = Dropdown(width=600, options=[], on_change=self.select_song)
+        self.sdd = Dropdown(width=600, options=[dropdown.Option(t) for t in titles], 
+                            on_change=self.select_song, autofocus=True,
+                            value=titles[0])
         self.page.appbar = self.appbar
         self.search_view = Row(controls=[self.sdd, self.song, FloatingActionButton(icon=icons.SEARCH, on_click=self.search_clicked)])
         return Column(controls=[self.search_view, self.selection])
@@ -84,4 +86,4 @@ def main(page: Page):
     page.update()
 
 
-flet.app(target=main)
+ft.app(target=main)

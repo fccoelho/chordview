@@ -11,7 +11,7 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.10"
 musicir = "^0.0.5"
-flet = "^0.1.58"
+flet = "^0.4.0"
 SQLAlchemy = "^1.4.42"
 duckdb = "^0.6.1"
 

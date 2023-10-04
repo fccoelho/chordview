@@ -1,8 +1,8 @@
 import flet as ft
 from flet import (AppBar, Page, Text, ElevatedButton, UserControl,
-    View, colors, TextField, FloatingActionButton, icons, margin, Column,
-    Row, Dropdown, dropdown, PopupMenuItem, Icon, PopupMenuButton, Container,
-    AlertDialog)
+                  View, colors, TextField, FloatingActionButton, icons, margin, Column,
+                  Row, Dropdown, dropdown, PopupMenuItem, Icon, PopupMenuButton, Container,
+                  AlertDialog)
 from search import search_song
 from tabs import build_tabs
 
@@ -13,8 +13,8 @@ class ChordViewApp(UserControl):
         self.page = page
         self.dlg = AlertDialog(
             title=Text("Not Found!"),
-            content = Text(""),
-            actions= [ft.TextButton("Ok", on_click=self.close_dialog)],
+            content=Text(""),
+            actions=[ft.TextButton("Ok", on_click=self.close_dialog)],
             on_dismiss=lambda e: 1
         )
         self.appbar_items = [
@@ -42,39 +42,56 @@ class ChordViewApp(UserControl):
         self.update()
 
     def search_clicked(self, e):
-        titles = sorted([t[0] for t in search_song(self.song.value)])
+        titles = sorted([t[0] for t in search_song(self.songsearch.value)])
         if not titles:
-            self.dlg.content = Text(f"No song containing the word '{self.song.value}'.")
+            self.dlg.content = Text(f"No song containing the word '{self.songsearch.value}'.")
             self.page.dialog = self.dlg
             self.page.dialog.open = True
             self.page.update()
+            self.sdd.options = [dropdown.Option(t) for t in sorted([t[0] for t in search_song()])]
         else:
+            self.sdd.options = [dropdown.Option(t) for t in titles]
             self.sdd.value = titles[0]
         self.update()
 
     def close_dialog(self, e):
         self.dlg.open = False
-        self.song.value = "Which song do you want to play?"
+        self.songsearch.value = "Which song do you want to play?"
         self.page.update()
         self.update()
+
     def select_song(self, e):
         self.sngname.value = self.sdd.value
         self.update()
 
     def build(self):
-        ''' Build the GUI '''
+        ''' Builds the GUI '''
         titles = sorted([t[0] for t in search_song()])
-        self.song = TextField(hint_text="Which song do you want to play?", width=400)
+        self.songsearch = TextField(hint_text="Type song name", width=400, on_change=self.search_clicked)
         self.sngname = Text(" ", style="titleLarge")
         self.selection = Row([Text("Selected Song: ", style="titleMedium"), self.sngname])
-        self.sdd = Dropdown(width=600, options=[dropdown.Option(t) for t in titles], 
+        self.sdd = Dropdown(width=600, options=[dropdown.Option(t) for t in titles],
                             on_change=self.select_song, autofocus=True,
                             value=titles[0])
         self.page.appbar = self.appbar
-        self.search_view = Row(controls=[self.sdd, self.song, FloatingActionButton(icon=icons.SEARCH, on_click=self.search_clicked)])
-        return Column(controls=[self.search_view, self.selection])
+        self.search_view = Row(
+            controls=[self.sdd,
+                      ]
+        )
+        layout = Column(
+            width=600,
+            controls=[
+                self.search_view,
 
-
+                Row(
+                    controls=[self.songsearch,
+                              FloatingActionButton(icon=icons.SEARCH, on_click=self.search_clicked),
+                              ]
+                ),
+                self.selection,
+            ]
+        )
+        return layout
 
 
 def main(page: Page):

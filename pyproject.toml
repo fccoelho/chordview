@@ -9,13 +9,13 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-musicir = "^0.0.5"
-flet = "^0.4.0"
+python = ">3.11,<3.13"
+musicir = "^0.0.6"
+flet = "*"
 SQLAlchemy = "^1.4.42"
-duckdb = "^0.6.1"
+duckdb = "*"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.1.3"
 mypy = "^0.971"
 nox = "^2022.8.7"

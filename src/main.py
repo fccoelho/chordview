@@ -1,6 +1,6 @@
 import flet as ft
-from flet import (AppBar, Page, Text, colors, TextField, FloatingActionButton, 
-                 icons, margin, Column, Row, Dropdown, dropdown, PopupMenuItem, 
+from flet import (AppBar, Page, Text, Colors, TextField, FloatingActionButton, 
+                  margin, Column, Row, Dropdown,  PopupMenuItem,
                  Icon, PopupMenuButton, Container, AlertDialog)
 from search import search_song
 
@@ -22,7 +22,7 @@ def search_clicked(e):
         e.control.value = "Which song do you want to play?"
     else:
         dropdown = e.page.controls[0].controls[0].controls[0]
-        dropdown.options = [dropdown.Option(t) for t in titles]
+        dropdown.options = [ft.dropdown.Option(t) for t in titles]
         dropdown.value = titles[0]
     e.page.update()
 
@@ -33,16 +33,16 @@ def select_song(e):
 
 def main(page: Page):
     page.title = "Chord Viewer"
-    page.bgcolor = colors.BLUE_GREY_200
+    page.bgcolor = Colors.BLUE_GREY_200
     
     # Create app bar
     appbar = AppBar(
-        leading=Icon(icons.AUDIOTRACK),
+        leading=Icon(ft.Icons.AUDIOTRACK),
         leading_width=100,
         title=Text("Chord View", size=32, text_align="start"),
         center_title=False,
         toolbar_height=75,
-        bgcolor=colors.LIGHT_BLUE_ACCENT_700,
+        bgcolor=Colors.LIGHT_BLUE_ACCENT_700,
         actions=[
             Container(
                 content=PopupMenuButton(
@@ -66,7 +66,7 @@ def main(page: Page):
     selection = Row([Text("Selected Song: ", style="titleMedium"), sngname])
     sdd = Dropdown(
         width=600,
-        options=[dropdown.Option(t) for t in titles],
+        options=[ft.dropdown.Option(t) for t in titles],
         on_change=select_song,
         autofocus=True,
         value=titles[0]
@@ -82,7 +82,7 @@ def main(page: Page):
                 Row(
                     controls=[
                         songsearch,
-                        FloatingActionButton(icon=icons.SEARCH, on_click=search_clicked)
+                        # FloatingActionButton(icon=ft.Icons.SEARCH, on_click=search_clicked)
                     ]
                 ),
                 selection
